@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "probe-kit"
+version = "0.1.0"
+description = "Reusable Geometry Node actors as registered graphs. Git is the source of truth. The .blend is a cache."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "Plygonality" }]
+keywords = ["blender", "geometry-nodes", "procedural", "tech-art", "hard-scifi"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Multimedia :: Graphics :: 3D Modeling",
+]
+dependencies = [
+    "gn-as-code @ git+https://github.com/Plygonality/gn-as-code.git",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "ruff>=0.6"]
+
+[project.scripts]
+probe-kit = "probe_kit.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/Plygonality/Probe-kit"
+gn-as-code = "https://github.com/Plygonality/gn-as-code"
+Master-Node = "https://github.com/Plygonality/Master-Node"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+probe_kit = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
