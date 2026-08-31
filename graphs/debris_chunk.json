@@ -1,0 +1,570 @@
+{
+  "format": "gn-as-code",
+  "version": 1,
+  "name": "PK Debris Chunk",
+  "kind": "GROUP",
+  "blender": "4.2",
+  "interface": {
+    "inputs": [
+      {
+        "name": "Scale",
+        "socket": "FLOAT",
+        "default": 1,
+        "min": 0.01,
+        "max": 50,
+        "description": "Uniform actor scale around the primary attach origin"
+      },
+      {
+        "name": "Attach Location",
+        "socket": "VECTOR",
+        "default": [
+          0,
+          0,
+          0
+        ],
+        "description": "World position of the primary attach (feet, dock, centroid)"
+      },
+      {
+        "name": "Attach Rotation",
+        "socket": "VECTOR",
+        "default": [
+          0,
+          0,
+          0
+        ],
+        "description": "Euler XYZ in radians. Z-up, Y-forward."
+      },
+      {
+        "name": "Hull",
+        "socket": "MATERIAL",
+        "description": "Master-Node metal (MN Metal). Bind a category master, not a unique shader."
+      },
+      {
+        "name": "Glass",
+        "socket": "MATERIAL",
+        "description": "Master-Node glass (MN Glass). Canopy / dome / viewport."
+      },
+      {
+        "name": "Seed",
+        "socket": "INT",
+        "default": 0,
+        "description": "Offsets the fracture noise"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "Geometry",
+        "socket": "GEOMETRY"
+      },
+      {
+        "name": "Attach",
+        "socket": "VECTOR"
+      },
+      {
+        "name": "Weld Attach",
+        "socket": "VECTOR"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "Group Input",
+      "type": "NodeGroupInput",
+      "location": [
+        0,
+        350
+      ]
+    },
+    {
+      "id": "Group Output",
+      "type": "NodeGroupOutput",
+      "location": [
+        2800,
+        0
+      ]
+    },
+    {
+      "id": "assign_hull",
+      "type": "GeometryNodeSetMaterial",
+      "location": [
+        2240,
+        0
+      ]
+    },
+    {
+      "id": "carve",
+      "type": "GeometryNodeMeshBoolean",
+      "location": [
+        1960,
+        0
+      ]
+    },
+    {
+      "id": "chip",
+      "type": "ShaderNodeVectorMath",
+      "location": [
+        1400,
+        0
+      ],
+      "properties": {
+        "operation": "SCALE"
+      }
+    },
+    {
+      "id": "chip_amp",
+      "type": "ShaderNodeMath",
+      "location": [
+        1120,
+        0
+      ],
+      "inputs": {
+        "Value_001": 0.08
+      },
+      "properties": {
+        "operation": "MULTIPLY"
+      }
+    },
+    {
+      "id": "cut_a",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        280
+      ],
+      "inputs": {
+        "Rotation": [
+          0.4,
+          0.2,
+          0.6
+        ],
+        "Translation": [
+          0.12,
+          0.08,
+          0.04
+        ]
+      }
+    },
+    {
+      "id": "cut_a_mesh",
+      "type": "GeometryNodeMeshCube",
+      "location": [
+        0,
+        210
+      ],
+      "inputs": {
+        "Size": [
+          0.18,
+          0.06,
+          0.22
+        ]
+      }
+    },
+    {
+      "id": "cut_b",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        140
+      ],
+      "inputs": {
+        "Rotation": [
+          0.2,
+          -0.5,
+          0.1
+        ],
+        "Translation": [
+          -0.1,
+          -0.06,
+          0.1
+        ]
+      }
+    },
+    {
+      "id": "cut_b_mesh",
+      "type": "GeometryNodeMeshCube",
+      "location": [
+        0,
+        70
+      ],
+      "inputs": {
+        "Size": [
+          0.1,
+          0.2,
+          0.08
+        ]
+      }
+    },
+    {
+      "id": "displace",
+      "type": "GeometryNodeSetPosition",
+      "location": [
+        1680,
+        0
+      ]
+    },
+    {
+      "id": "fracture",
+      "type": "ShaderNodeTexNoise",
+      "location": [
+        840,
+        0
+      ],
+      "inputs": {
+        "Detail": 3,
+        "Roughness": 0.55,
+        "Scale": 3.4
+      }
+    },
+    {
+      "id": "noise_vec",
+      "type": "ShaderNodeCombineXYZ",
+      "location": [
+        560,
+        0
+      ]
+    },
+    {
+      "id": "normal",
+      "type": "GeometryNodeInputNormal",
+      "location": [
+        0,
+        -70
+      ]
+    },
+    {
+      "id": "place",
+      "type": "GeometryNodeTransform",
+      "location": [
+        2520,
+        0
+      ]
+    },
+    {
+      "id": "rock",
+      "type": "GeometryNodeMeshIcoSphere",
+      "location": [
+        0,
+        -210
+      ],
+      "inputs": {
+        "Radius": 0.16
+      }
+    },
+    {
+      "id": "scale_vec",
+      "type": "ShaderNodeCombineXYZ",
+      "location": [
+        280,
+        0
+      ]
+    },
+    {
+      "id": "seed_f",
+      "type": "ShaderNodeMath",
+      "location": [
+        280,
+        -140
+      ],
+      "inputs": {
+        "Value_001": 0.37
+      },
+      "properties": {
+        "operation": "MULTIPLY"
+      }
+    },
+    {
+      "id": "weld_attach_local",
+      "type": "ShaderNodeCombineXYZ",
+      "location": [
+        0,
+        -350
+      ],
+      "inputs": {
+        "Z": 0.18
+      }
+    },
+    {
+      "id": "weld_attach_scaled",
+      "type": "ShaderNodeVectorMath",
+      "location": [
+        280,
+        -280
+      ],
+      "properties": {
+        "operation": "SCALE"
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": [
+        "Group Input",
+        "Attach Location"
+      ],
+      "to": [
+        "Group Output",
+        "Attach"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Attach Location"
+      ],
+      "to": [
+        "place",
+        "Translation"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Attach Rotation"
+      ],
+      "to": [
+        "place",
+        "Rotation"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Hull"
+      ],
+      "to": [
+        "assign_hull",
+        "Material"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Scale"
+      ],
+      "to": [
+        "scale_vec",
+        "X"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Scale"
+      ],
+      "to": [
+        "scale_vec",
+        "Y"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Scale"
+      ],
+      "to": [
+        "scale_vec",
+        "Z"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Scale"
+      ],
+      "to": [
+        "weld_attach_scaled",
+        "Scale"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Seed"
+      ],
+      "to": [
+        "seed_f",
+        "Value"
+      ]
+    },
+    {
+      "from": [
+        "assign_hull",
+        "Geometry"
+      ],
+      "to": [
+        "place",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "carve",
+        "Mesh"
+      ],
+      "to": [
+        "assign_hull",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "chip",
+        "Vector"
+      ],
+      "to": [
+        "displace",
+        "Offset"
+      ]
+    },
+    {
+      "from": [
+        "chip_amp",
+        "Value"
+      ],
+      "to": [
+        "chip",
+        "Scale"
+      ]
+    },
+    {
+      "from": [
+        "cut_a",
+        "Geometry"
+      ],
+      "to": [
+        "carve",
+        "Mesh 2"
+      ]
+    },
+    {
+      "from": [
+        "cut_a_mesh",
+        "Mesh"
+      ],
+      "to": [
+        "cut_a",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "cut_b",
+        "Geometry"
+      ],
+      "to": [
+        "carve",
+        "Mesh 2"
+      ]
+    },
+    {
+      "from": [
+        "cut_b_mesh",
+        "Mesh"
+      ],
+      "to": [
+        "cut_b",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "displace",
+        "Geometry"
+      ],
+      "to": [
+        "carve",
+        "Mesh 1"
+      ]
+    },
+    {
+      "from": [
+        "fracture",
+        "Fac"
+      ],
+      "to": [
+        "chip_amp",
+        "Value"
+      ]
+    },
+    {
+      "from": [
+        "noise_vec",
+        "Vector"
+      ],
+      "to": [
+        "fracture",
+        "Vector"
+      ]
+    },
+    {
+      "from": [
+        "normal",
+        "Normal"
+      ],
+      "to": [
+        "chip",
+        "Vector"
+      ]
+    },
+    {
+      "from": [
+        "place",
+        "Geometry"
+      ],
+      "to": [
+        "Group Output",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "rock",
+        "Mesh"
+      ],
+      "to": [
+        "displace",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "scale_vec",
+        "Vector"
+      ],
+      "to": [
+        "place",
+        "Scale"
+      ]
+    },
+    {
+      "from": [
+        "seed_f",
+        "Value"
+      ],
+      "to": [
+        "noise_vec",
+        "X"
+      ]
+    },
+    {
+      "from": [
+        "weld_attach_local",
+        "Vector"
+      ],
+      "to": [
+        "weld_attach_scaled",
+        "Vector"
+      ]
+    },
+    {
+      "from": [
+        "weld_attach_scaled",
+        "Vector"
+      ],
+      "to": [
+        "Group Output",
+        "Weld Attach"
+      ]
+    }
+  ]
+}

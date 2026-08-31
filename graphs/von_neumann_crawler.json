@@ -1,0 +1,818 @@
+{
+  "format": "gn-as-code",
+  "version": 1,
+  "name": "PK Von Neumann Crawler",
+  "kind": "GROUP",
+  "blender": "4.2",
+  "interface": {
+    "inputs": [
+      {
+        "name": "Scale",
+        "socket": "FLOAT",
+        "default": 1,
+        "min": 0.01,
+        "max": 50,
+        "description": "Uniform actor scale around the primary attach origin"
+      },
+      {
+        "name": "Attach Location",
+        "socket": "VECTOR",
+        "default": [
+          0,
+          0,
+          0
+        ],
+        "description": "World position of the primary attach (feet, dock, centroid)"
+      },
+      {
+        "name": "Attach Rotation",
+        "socket": "VECTOR",
+        "default": [
+          0,
+          0,
+          0
+        ],
+        "description": "Euler XYZ in radians. Z-up, Y-forward."
+      },
+      {
+        "name": "Hull",
+        "socket": "MATERIAL",
+        "description": "Master-Node metal (MN Metal). Bind a category master, not a unique shader."
+      },
+      {
+        "name": "Glass",
+        "socket": "MATERIAL",
+        "description": "Master-Node glass (MN Glass). Canopy / dome / viewport."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "Geometry",
+        "socket": "GEOMETRY"
+      },
+      {
+        "name": "Attach",
+        "socket": "VECTOR"
+      },
+      {
+        "name": "Tool Attach",
+        "socket": "VECTOR"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "Group Input",
+      "type": "NodeGroupInput",
+      "location": [
+        0,
+        700
+      ]
+    },
+    {
+      "id": "Group Output",
+      "type": "NodeGroupOutput",
+      "location": [
+        2520,
+        0
+      ]
+    },
+    {
+      "id": "arm",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        630
+      ],
+      "inputs": {
+        "Rotation": [
+          1.570796,
+          0,
+          0
+        ],
+        "Translation": [
+          0,
+          0.24,
+          0.13
+        ]
+      }
+    },
+    {
+      "id": "arm_mesh",
+      "type": "GeometryNodeMeshCylinder",
+      "location": [
+        0,
+        560
+      ],
+      "inputs": {
+        "Depth": 0.16,
+        "Radius": 0.018,
+        "Vertices": 12
+      }
+    },
+    {
+      "id": "assign_glass",
+      "type": "GeometryNodeSetMaterial",
+      "location": [
+        560,
+        140
+      ]
+    },
+    {
+      "id": "assign_hull",
+      "type": "GeometryNodeSetMaterial",
+      "location": [
+        1680,
+        0
+      ]
+    },
+    {
+      "id": "body",
+      "type": "GeometryNodeJoinGeometry",
+      "location": [
+        1960,
+        0
+      ]
+    },
+    {
+      "id": "chassis",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        490
+      ],
+      "inputs": {
+        "Translation": [
+          0,
+          0,
+          0.13
+        ]
+      }
+    },
+    {
+      "id": "chassis_mesh",
+      "type": "GeometryNodeMeshCube",
+      "location": [
+        0,
+        420
+      ],
+      "inputs": {
+        "Size": [
+          0.4,
+          0.32,
+          0.09
+        ]
+      }
+    },
+    {
+      "id": "dome",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        350
+      ],
+      "inputs": {
+        "Translation": [
+          0,
+          0.14,
+          0.22
+        ]
+      }
+    },
+    {
+      "id": "dome_mesh",
+      "type": "GeometryNodeMeshUVSphere",
+      "location": [
+        0,
+        280
+      ],
+      "inputs": {
+        "Radius": 0.055,
+        "Rings": 8,
+        "Segments": 16
+      }
+    },
+    {
+      "id": "foot",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        210
+      ],
+      "inputs": {
+        "Translation": [
+          0,
+          0,
+          -0.07
+        ]
+      }
+    },
+    {
+      "id": "foot_pad",
+      "type": "GeometryNodeMeshCylinder",
+      "location": [
+        0,
+        140
+      ],
+      "inputs": {
+        "Depth": 0.02,
+        "Radius": 0.04,
+        "Vertices": 10
+      }
+    },
+    {
+      "id": "gripper",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        70
+      ],
+      "inputs": {
+        "Rotation": [
+          1.570796,
+          0,
+          0
+        ],
+        "Translation": [
+          0,
+          0.34,
+          0.13
+        ]
+      }
+    },
+    {
+      "id": "gripper_mesh",
+      "type": "GeometryNodeMeshCone",
+      "location": [
+        0,
+        0
+      ],
+      "inputs": {
+        "Depth": 0.06,
+        "Radius Bottom": 0.03,
+        "Vertices": 12
+      }
+    },
+    {
+      "id": "hull",
+      "type": "GeometryNodeJoinGeometry",
+      "location": [
+        1400,
+        0
+      ]
+    },
+    {
+      "id": "leg_instances",
+      "type": "GeometryNodeInstanceOnPoints",
+      "location": [
+        840,
+        0
+      ]
+    },
+    {
+      "id": "leg_points",
+      "type": "GeometryNodeMeshToPoints",
+      "location": [
+        560,
+        0
+      ]
+    },
+    {
+      "id": "leg_ring",
+      "type": "GeometryNodeMeshCircle",
+      "location": [
+        0,
+        -140
+      ],
+      "inputs": {
+        "Radius": 0.17,
+        "Vertices": 6
+      }
+    },
+    {
+      "id": "leg_ring_lift",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        -70
+      ],
+      "inputs": {
+        "Translation": [
+          0,
+          0,
+          0.07
+        ]
+      }
+    },
+    {
+      "id": "leg_strut",
+      "type": "GeometryNodeMeshCylinder",
+      "location": [
+        0,
+        -280
+      ],
+      "inputs": {
+        "Depth": 0.12,
+        "Radius": 0.018,
+        "Vertices": 10
+      }
+    },
+    {
+      "id": "leg_unit",
+      "type": "GeometryNodeJoinGeometry",
+      "location": [
+        560,
+        -140
+      ]
+    },
+    {
+      "id": "legs",
+      "type": "GeometryNodeRealizeInstances",
+      "location": [
+        1120,
+        0
+      ]
+    },
+    {
+      "id": "place",
+      "type": "GeometryNodeTransform",
+      "location": [
+        2240,
+        0
+      ]
+    },
+    {
+      "id": "radiator",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        -210
+      ],
+      "inputs": {
+        "Translation": [
+          0,
+          -0.18,
+          0.14
+        ]
+      }
+    },
+    {
+      "id": "radiator_mesh",
+      "type": "GeometryNodeMeshCube",
+      "location": [
+        0,
+        -420
+      ],
+      "inputs": {
+        "Size": [
+          0.28,
+          0.02,
+          0.08
+        ]
+      }
+    },
+    {
+      "id": "scale_vec",
+      "type": "ShaderNodeCombineXYZ",
+      "location": [
+        280,
+        -350
+      ]
+    },
+    {
+      "id": "sensor_house",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        -490
+      ],
+      "inputs": {
+        "Translation": [
+          0,
+          0.14,
+          0.18
+        ]
+      }
+    },
+    {
+      "id": "sensor_house_mesh",
+      "type": "GeometryNodeMeshCube",
+      "location": [
+        0,
+        -560
+      ],
+      "inputs": {
+        "Size": [
+          0.12,
+          0.1,
+          0.06
+        ]
+      }
+    },
+    {
+      "id": "tool_attach_local",
+      "type": "ShaderNodeCombineXYZ",
+      "location": [
+        0,
+        -700
+      ],
+      "inputs": {
+        "Y": 0.36,
+        "Z": 0.13
+      }
+    },
+    {
+      "id": "tool_attach_scaled",
+      "type": "ShaderNodeVectorMath",
+      "location": [
+        280,
+        -630
+      ],
+      "properties": {
+        "operation": "SCALE"
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": [
+        "Group Input",
+        "Attach Location"
+      ],
+      "to": [
+        "Group Output",
+        "Attach"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Attach Location"
+      ],
+      "to": [
+        "place",
+        "Translation"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Attach Rotation"
+      ],
+      "to": [
+        "place",
+        "Rotation"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Glass"
+      ],
+      "to": [
+        "assign_glass",
+        "Material"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Hull"
+      ],
+      "to": [
+        "assign_hull",
+        "Material"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Scale"
+      ],
+      "to": [
+        "scale_vec",
+        "X"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Scale"
+      ],
+      "to": [
+        "scale_vec",
+        "Y"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Scale"
+      ],
+      "to": [
+        "scale_vec",
+        "Z"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Scale"
+      ],
+      "to": [
+        "tool_attach_scaled",
+        "Scale"
+      ]
+    },
+    {
+      "from": [
+        "arm",
+        "Geometry"
+      ],
+      "to": [
+        "hull",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "arm_mesh",
+        "Mesh"
+      ],
+      "to": [
+        "arm",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "assign_glass",
+        "Geometry"
+      ],
+      "to": [
+        "body",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "assign_hull",
+        "Geometry"
+      ],
+      "to": [
+        "body",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "body",
+        "Geometry"
+      ],
+      "to": [
+        "place",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "chassis",
+        "Geometry"
+      ],
+      "to": [
+        "hull",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "chassis_mesh",
+        "Mesh"
+      ],
+      "to": [
+        "chassis",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "dome",
+        "Geometry"
+      ],
+      "to": [
+        "assign_glass",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "dome_mesh",
+        "Mesh"
+      ],
+      "to": [
+        "dome",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "foot",
+        "Geometry"
+      ],
+      "to": [
+        "leg_unit",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "foot_pad",
+        "Mesh"
+      ],
+      "to": [
+        "foot",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "gripper",
+        "Geometry"
+      ],
+      "to": [
+        "hull",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "gripper_mesh",
+        "Mesh"
+      ],
+      "to": [
+        "gripper",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "hull",
+        "Geometry"
+      ],
+      "to": [
+        "assign_hull",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "leg_instances",
+        "Instances"
+      ],
+      "to": [
+        "legs",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "leg_points",
+        "Points"
+      ],
+      "to": [
+        "leg_instances",
+        "Points"
+      ]
+    },
+    {
+      "from": [
+        "leg_ring",
+        "Mesh"
+      ],
+      "to": [
+        "leg_ring_lift",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "leg_ring_lift",
+        "Geometry"
+      ],
+      "to": [
+        "leg_points",
+        "Mesh"
+      ]
+    },
+    {
+      "from": [
+        "leg_strut",
+        "Mesh"
+      ],
+      "to": [
+        "leg_unit",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "leg_unit",
+        "Geometry"
+      ],
+      "to": [
+        "leg_instances",
+        "Instance"
+      ]
+    },
+    {
+      "from": [
+        "legs",
+        "Geometry"
+      ],
+      "to": [
+        "hull",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "place",
+        "Geometry"
+      ],
+      "to": [
+        "Group Output",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "radiator",
+        "Geometry"
+      ],
+      "to": [
+        "hull",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "radiator_mesh",
+        "Mesh"
+      ],
+      "to": [
+        "radiator",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "scale_vec",
+        "Vector"
+      ],
+      "to": [
+        "place",
+        "Scale"
+      ]
+    },
+    {
+      "from": [
+        "sensor_house",
+        "Geometry"
+      ],
+      "to": [
+        "hull",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "sensor_house_mesh",
+        "Mesh"
+      ],
+      "to": [
+        "sensor_house",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "tool_attach_local",
+        "Vector"
+      ],
+      "to": [
+        "tool_attach_scaled",
+        "Vector"
+      ]
+    },
+    {
+      "from": [
+        "tool_attach_scaled",
+        "Vector"
+      ],
+      "to": [
+        "Group Output",
+        "Tool Attach"
+      ]
+    }
+  ]
+}

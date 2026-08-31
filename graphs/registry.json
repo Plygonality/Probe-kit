@@ -1,0 +1,232 @@
+{
+  "format": "node-group-registry",
+  "version": 1,
+  "interface_version": 1,
+  "kind": "GROUP",
+  "scatter": "later",
+  "scale_socket": "Scale",
+  "shared": {
+    "inputs": [
+      "Scale",
+      "Attach Location",
+      "Attach Rotation",
+      "Hull",
+      "Glass"
+    ],
+    "outputs": [
+      "Geometry",
+      "Attach"
+    ]
+  },
+  "materials": [
+    {
+      "socket": "Hull",
+      "master_category": "metal",
+      "tree": "MN Metal",
+      "preset": "metal.brushed_aluminum",
+      "description": "Conductor hull, radiator, legs, thrusters."
+    },
+    {
+      "socket": "Glass",
+      "master_category": "glass",
+      "tree": "MN Glass",
+      "preset": "glass.clear",
+      "description": "Canopy, sensor dome, viewport."
+    }
+  ],
+  "groups": [
+    {
+      "id": "von_neumann_crawler",
+      "name": "PK Von Neumann Crawler",
+      "label": "Von Neumann crawler",
+      "description": "Self-replicator that walks a hull. Origin is the foot plane. Sensor dome is glass; chassis, legs, and harvest arm are hull metal.",
+      "kind": "GROUP",
+      "blender": "4.2",
+      "scatter": "later",
+      "scale_socket": "Scale",
+      "attach": [
+        {
+          "name": "Attach",
+          "role": "contact",
+          "space": "world",
+          "description": "Foot plane. Plant on a surface; scatter later instances here.",
+          "local": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "name": "Tool Attach",
+          "role": "tool",
+          "space": "local",
+          "description": "Harvest-arm tip. Local offset, already scaled.",
+          "local": [
+            0.0,
+            0.36,
+            0.13
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "socket": "Hull",
+          "master_category": "metal",
+          "tree": "MN Metal",
+          "preset": "metal.brushed_aluminum",
+          "description": "Conductor hull, radiator, legs, thrusters."
+        },
+        {
+          "socket": "Glass",
+          "master_category": "glass",
+          "tree": "MN Glass",
+          "preset": "glass.clear",
+          "description": "Canopy, sensor dome, viewport."
+        }
+      ],
+      "interface": {
+        "inputs": [
+          "Scale",
+          "Attach Location",
+          "Attach Rotation",
+          "Hull",
+          "Glass"
+        ],
+        "outputs": [
+          "Geometry",
+          "Attach",
+          "Tool Attach"
+        ]
+      }
+    },
+    {
+      "id": "service_drone",
+      "name": "PK Service Drone",
+      "label": "Service drone",
+      "description": "Short-range tender. Origin is the underside dock. Canopy is glass; fuselage and thrusters are hull metal.",
+      "kind": "GROUP",
+      "blender": "4.2",
+      "scatter": "later",
+      "scale_socket": "Scale",
+      "attach": [
+        {
+          "name": "Attach",
+          "role": "dock",
+          "space": "world",
+          "description": "Underside docking ring. Hang from a bay or plant on a pad.",
+          "local": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "name": "Canopy Attach",
+          "role": "canopy",
+          "space": "local",
+          "description": "Glass canopy apex. Local offset, already scaled.",
+          "local": [
+            0.0,
+            0.06,
+            0.16
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "socket": "Hull",
+          "master_category": "metal",
+          "tree": "MN Metal",
+          "preset": "metal.brushed_aluminum",
+          "description": "Conductor hull, radiator, legs, thrusters."
+        },
+        {
+          "socket": "Glass",
+          "master_category": "glass",
+          "tree": "MN Glass",
+          "preset": "glass.clear",
+          "description": "Canopy, sensor dome, viewport."
+        }
+      ],
+      "interface": {
+        "inputs": [
+          "Scale",
+          "Attach Location",
+          "Attach Rotation",
+          "Hull",
+          "Glass"
+        ],
+        "outputs": [
+          "Geometry",
+          "Attach",
+          "Canopy Attach"
+        ]
+      }
+    },
+    {
+      "id": "debris_chunk",
+      "name": "PK Debris Chunk",
+      "label": "Debris chunk",
+      "description": "Fractured hull fragment. Origin is the centroid. Hull metal only; the Glass socket is kept for the shared contract.",
+      "kind": "GROUP",
+      "blender": "4.2",
+      "scatter": "later",
+      "scale_socket": "Scale",
+      "attach": [
+        {
+          "name": "Attach",
+          "role": "centroid",
+          "space": "world",
+          "description": "Chunk centroid. Scatter later instances here.",
+          "local": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "name": "Weld Attach",
+          "role": "weld",
+          "space": "local",
+          "description": "A point on the fragment toward +Z. Local offset, already scaled.",
+          "local": [
+            0.0,
+            0.0,
+            0.18
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "socket": "Hull",
+          "master_category": "metal",
+          "tree": "MN Metal",
+          "preset": "metal.brushed_aluminum",
+          "description": "Conductor hull, radiator, legs, thrusters."
+        },
+        {
+          "socket": "Glass",
+          "master_category": "glass",
+          "tree": "MN Glass",
+          "preset": "glass.clear",
+          "description": "Canopy, sensor dome, viewport."
+        }
+      ],
+      "interface": {
+        "inputs": [
+          "Scale",
+          "Attach Location",
+          "Attach Rotation",
+          "Hull",
+          "Glass",
+          "Seed"
+        ],
+        "outputs": [
+          "Geometry",
+          "Attach",
+          "Weld Attach"
+        ]
+      }
+    }
+  ]
+}

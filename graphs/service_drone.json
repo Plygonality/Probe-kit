@@ -1,0 +1,682 @@
+{
+  "format": "gn-as-code",
+  "version": 1,
+  "name": "PK Service Drone",
+  "kind": "GROUP",
+  "blender": "4.2",
+  "interface": {
+    "inputs": [
+      {
+        "name": "Scale",
+        "socket": "FLOAT",
+        "default": 1,
+        "min": 0.01,
+        "max": 50,
+        "description": "Uniform actor scale around the primary attach origin"
+      },
+      {
+        "name": "Attach Location",
+        "socket": "VECTOR",
+        "default": [
+          0,
+          0,
+          0
+        ],
+        "description": "World position of the primary attach (feet, dock, centroid)"
+      },
+      {
+        "name": "Attach Rotation",
+        "socket": "VECTOR",
+        "default": [
+          0,
+          0,
+          0
+        ],
+        "description": "Euler XYZ in radians. Z-up, Y-forward."
+      },
+      {
+        "name": "Hull",
+        "socket": "MATERIAL",
+        "description": "Master-Node metal (MN Metal). Bind a category master, not a unique shader."
+      },
+      {
+        "name": "Glass",
+        "socket": "MATERIAL",
+        "description": "Master-Node glass (MN Glass). Canopy / dome / viewport."
+      }
+    ],
+    "outputs": [
+      {
+        "name": "Geometry",
+        "socket": "GEOMETRY"
+      },
+      {
+        "name": "Attach",
+        "socket": "VECTOR"
+      },
+      {
+        "name": "Canopy Attach",
+        "socket": "VECTOR"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "Group Input",
+      "type": "NodeGroupInput",
+      "location": [
+        0,
+        560
+      ]
+    },
+    {
+      "id": "Group Output",
+      "type": "NodeGroupOutput",
+      "location": [
+        1680,
+        0
+      ]
+    },
+    {
+      "id": "antenna",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        560
+      ],
+      "inputs": {
+        "Translation": [
+          0,
+          -0.06,
+          0.16
+        ]
+      }
+    },
+    {
+      "id": "antenna_mesh",
+      "type": "GeometryNodeMeshCylinder",
+      "location": [
+        0,
+        420
+      ],
+      "inputs": {
+        "Depth": 0.08,
+        "Radius": 0.008,
+        "Vertices": 8
+      }
+    },
+    {
+      "id": "assign_glass",
+      "type": "GeometryNodeSetMaterial",
+      "location": [
+        560,
+        70
+      ]
+    },
+    {
+      "id": "assign_hull",
+      "type": "GeometryNodeSetMaterial",
+      "location": [
+        840,
+        0
+      ]
+    },
+    {
+      "id": "body",
+      "type": "GeometryNodeJoinGeometry",
+      "location": [
+        1120,
+        0
+      ]
+    },
+    {
+      "id": "canopy",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        420
+      ],
+      "inputs": {
+        "Scale": [
+          0.85,
+          1.05,
+          0.55
+        ],
+        "Translation": [
+          0,
+          0.06,
+          0.13
+        ]
+      }
+    },
+    {
+      "id": "canopy_attach_local",
+      "type": "ShaderNodeCombineXYZ",
+      "location": [
+        0,
+        280
+      ],
+      "inputs": {
+        "Y": 0.06,
+        "Z": 0.16
+      }
+    },
+    {
+      "id": "canopy_attach_scaled",
+      "type": "ShaderNodeVectorMath",
+      "location": [
+        280,
+        280
+      ],
+      "properties": {
+        "operation": "SCALE"
+      }
+    },
+    {
+      "id": "canopy_mesh",
+      "type": "GeometryNodeMeshUVSphere",
+      "location": [
+        0,
+        140
+      ],
+      "inputs": {
+        "Radius": 0.07,
+        "Rings": 8,
+        "Segments": 16
+      }
+    },
+    {
+      "id": "dock",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        140
+      ],
+      "inputs": {
+        "Translation": [
+          0,
+          0,
+          0.012
+        ]
+      }
+    },
+    {
+      "id": "dock_mesh",
+      "type": "GeometryNodeMeshCylinder",
+      "location": [
+        0,
+        0
+      ],
+      "inputs": {
+        "Depth": 0.02,
+        "Radius": 0.055,
+        "Vertices": 16
+      }
+    },
+    {
+      "id": "fuselage",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        0
+      ],
+      "inputs": {
+        "Translation": [
+          0,
+          0,
+          0.08
+        ]
+      }
+    },
+    {
+      "id": "fuselage_mesh",
+      "type": "GeometryNodeMeshCube",
+      "location": [
+        0,
+        -140
+      ],
+      "inputs": {
+        "Size": [
+          0.28,
+          0.22,
+          0.07
+        ]
+      }
+    },
+    {
+      "id": "hull",
+      "type": "GeometryNodeJoinGeometry",
+      "location": [
+        560,
+        -70
+      ]
+    },
+    {
+      "id": "nose",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        -140
+      ],
+      "inputs": {
+        "Rotation": [
+          1.570796,
+          0,
+          0
+        ],
+        "Translation": [
+          0,
+          0.16,
+          0.08
+        ]
+      }
+    },
+    {
+      "id": "nose_mesh",
+      "type": "GeometryNodeMeshCone",
+      "location": [
+        0,
+        -280
+      ],
+      "inputs": {
+        "Depth": 0.1,
+        "Radius Bottom": 0.06,
+        "Vertices": 12
+      }
+    },
+    {
+      "id": "place",
+      "type": "GeometryNodeTransform",
+      "location": [
+        1400,
+        0
+      ]
+    },
+    {
+      "id": "scale_vec",
+      "type": "ShaderNodeCombineXYZ",
+      "location": [
+        280,
+        -280
+      ]
+    },
+    {
+      "id": "thruster_port",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        -420
+      ],
+      "inputs": {
+        "Rotation": [
+          0,
+          1.570796,
+          0
+        ],
+        "Translation": [
+          -0.17,
+          0,
+          0.06
+        ]
+      }
+    },
+    {
+      "id": "thruster_port_mesh",
+      "type": "GeometryNodeMeshCylinder",
+      "location": [
+        0,
+        -420
+      ],
+      "inputs": {
+        "Depth": 0.1,
+        "Radius": 0.032,
+        "Vertices": 12
+      }
+    },
+    {
+      "id": "thruster_starboard",
+      "type": "GeometryNodeTransform",
+      "location": [
+        280,
+        -560
+      ],
+      "inputs": {
+        "Rotation": [
+          0,
+          1.570796,
+          0
+        ],
+        "Translation": [
+          0.17,
+          0,
+          0.06
+        ]
+      }
+    },
+    {
+      "id": "thruster_starboard_mesh",
+      "type": "GeometryNodeMeshCylinder",
+      "location": [
+        0,
+        -560
+      ],
+      "inputs": {
+        "Depth": 0.1,
+        "Radius": 0.032,
+        "Vertices": 12
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": [
+        "Group Input",
+        "Attach Location"
+      ],
+      "to": [
+        "Group Output",
+        "Attach"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Attach Location"
+      ],
+      "to": [
+        "place",
+        "Translation"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Attach Rotation"
+      ],
+      "to": [
+        "place",
+        "Rotation"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Glass"
+      ],
+      "to": [
+        "assign_glass",
+        "Material"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Hull"
+      ],
+      "to": [
+        "assign_hull",
+        "Material"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Scale"
+      ],
+      "to": [
+        "canopy_attach_scaled",
+        "Scale"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Scale"
+      ],
+      "to": [
+        "scale_vec",
+        "X"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Scale"
+      ],
+      "to": [
+        "scale_vec",
+        "Y"
+      ]
+    },
+    {
+      "from": [
+        "Group Input",
+        "Scale"
+      ],
+      "to": [
+        "scale_vec",
+        "Z"
+      ]
+    },
+    {
+      "from": [
+        "antenna",
+        "Geometry"
+      ],
+      "to": [
+        "hull",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "antenna_mesh",
+        "Mesh"
+      ],
+      "to": [
+        "antenna",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "assign_glass",
+        "Geometry"
+      ],
+      "to": [
+        "body",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "assign_hull",
+        "Geometry"
+      ],
+      "to": [
+        "body",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "body",
+        "Geometry"
+      ],
+      "to": [
+        "place",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "canopy",
+        "Geometry"
+      ],
+      "to": [
+        "assign_glass",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "canopy_attach_local",
+        "Vector"
+      ],
+      "to": [
+        "canopy_attach_scaled",
+        "Vector"
+      ]
+    },
+    {
+      "from": [
+        "canopy_attach_scaled",
+        "Vector"
+      ],
+      "to": [
+        "Group Output",
+        "Canopy Attach"
+      ]
+    },
+    {
+      "from": [
+        "canopy_mesh",
+        "Mesh"
+      ],
+      "to": [
+        "canopy",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "dock",
+        "Geometry"
+      ],
+      "to": [
+        "hull",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "dock_mesh",
+        "Mesh"
+      ],
+      "to": [
+        "dock",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "fuselage",
+        "Geometry"
+      ],
+      "to": [
+        "hull",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "fuselage_mesh",
+        "Mesh"
+      ],
+      "to": [
+        "fuselage",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "hull",
+        "Geometry"
+      ],
+      "to": [
+        "assign_hull",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "nose",
+        "Geometry"
+      ],
+      "to": [
+        "hull",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "nose_mesh",
+        "Mesh"
+      ],
+      "to": [
+        "nose",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "place",
+        "Geometry"
+      ],
+      "to": [
+        "Group Output",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "scale_vec",
+        "Vector"
+      ],
+      "to": [
+        "place",
+        "Scale"
+      ]
+    },
+    {
+      "from": [
+        "thruster_port",
+        "Geometry"
+      ],
+      "to": [
+        "hull",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "thruster_port_mesh",
+        "Mesh"
+      ],
+      "to": [
+        "thruster_port",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "thruster_starboard",
+        "Geometry"
+      ],
+      "to": [
+        "hull",
+        "Geometry"
+      ]
+    },
+    {
+      "from": [
+        "thruster_starboard_mesh",
+        "Mesh"
+      ],
+      "to": [
+        "thruster_starboard",
+        "Geometry"
+      ]
+    }
+  ]
+}
