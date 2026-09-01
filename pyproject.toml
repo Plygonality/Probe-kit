@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "probe-kit"
 version = "0.1.0"
-description = "Reusable Geometry Node actors as registered graphs. Git is the source of truth. The .blend is a cache."
+description = "Reusable Geometry Node actors as registered graphs with scale and attach sockets. Git is the source of truth. The .blend is a cache."
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.10"

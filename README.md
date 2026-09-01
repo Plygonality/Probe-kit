@@ -1,10 +1,8 @@
 # Probe-kit
 
-Small reusable Geometry Node **actors** as registered graphs.
+Reusable Geometry Node actors as registered graphs with scale and attach sockets. Git is the source of truth. The `.blend` is a cache.
 
-A crawler, a drone, a debris chunk. Each is a node group with a Scale socket, attach sockets, and Master-Node hull/glass. Git is the source of truth. The `.blend` is a cache.
-
-Scatter is later. These groups are the instances, not the distributor.
+A crawler, a drone, a debris chunk. Each is a node group. Hull and glass bind to Master-Node. Scatter is later — these groups are the instances, not the distributor.
 
 ```
 Python builder  →  graphs/*.json  →  Plygon-mcp apply  →  viewport
